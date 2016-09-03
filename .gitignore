@@ -1,0 +1,4 @@
+Results/
+*.pyc
+*.csv_test
+./runscript.sh
