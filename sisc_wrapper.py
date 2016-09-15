@@ -251,7 +251,7 @@ def realTest(args):
     if not args.applyPCA:
         resultName = args.o+'_M='+str(args.M)+'_D='+str(args.D)+'_beta='+\
             str(args.Beta)+'__'+time.strftime('%H_%M_%S',time.localtime())
-        sio.savemat(resultName+'.mat',{'alpha_recon':alpha_recon,\
+        sio.savemat(resultName+'.mat',{'files':args.i,'alpha_recon':alpha_recon,\
         'psi_recon':psi_recon,'cost':cost,'reconError':reconError,'L0':L0,\
         'M':args.M,'D':args.D,'K':np.size(X,axis=1),'Beta':args.Beta,'SNR':SNR,\
         'Data':data,'header':header,'N':np.size(X,axis=0),'Data_Origin':'Real'})
