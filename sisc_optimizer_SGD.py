@@ -202,14 +202,15 @@ def optimize_SGD(X_array,M,D,beta,iter_thresh=5,\
     # psi represents all the patterns (D number of them)
     # M is a scalar integer representing time/frame length for pattern    
     totaldata = len(X_array)
-    alpha_array = []
     for X in X_array:
         N,K = np.shape(X)
         # M and N must be nonzero and even
         assert M!=0 and N!=0 and M % 2 == 0 and N % 2 == 0
-        # Initialize alpha and psi
-        alpha_array.append(np.zeros((N,D)))
+    
+    # Initialize alpha, psi, and cost
+    alpha_array = [np.zeros((len(X),D)) for X in X_array]
     psi = projectPsi(np.random.randn(M,K,D),1.0)
+    cost_array = [0 for i in xrange(totaldata)]
     
     # Iterate over all data points
     iter = 0
@@ -228,9 +229,8 @@ def optimize_SGD(X_array,M,D,beta,iter_thresh=5,\
             # Initialize over datapoints
             N,K = np.shape(X)
             sigPerSampl = np.linalg.norm(X)/N # Signal per sample
-            previtcost = logcost(X,alpha,psi,workers)
-            initLR_alpha = float(16)
-            initLR_psi = float(16)
+            initLR_alpha = float(M/2.)
+            initLR_psi = float(M/2.)
             print str(iter),'data #'+str(i),
          
             # Update alpha
@@ -238,7 +238,7 @@ def optimize_SGD(X_array,M,D,beta,iter_thresh=5,\
             gralpha = calcGrad_alpha(alpha,psi,X,workers)
             prevcost = logcost(X,alpha,psi,workers)
             gamma_alpha = initLR_alpha
-            # Try to use a large learning rate without diverging
+            # BoldDriver: Try to use a large learning rate without diverging
             for trialno in xrange(int(math.ceil(math.log(initLR_alpha,2)))+5):
                 # Project to l0norm<=N/M/beta space
                 newAlpha = proj_l0(alpha - gamma_alpha*gralpha,int(beta))
@@ -256,7 +256,7 @@ def optimize_SGD(X_array,M,D,beta,iter_thresh=5,\
             grpsi = calcGrad_psi(alpha,psi,X,workers)
             prevcost = logcost(X,alpha,psi,workers)
             gamma_psi = initLR_psi
-            # Try to use a large learning rate without diverging
+            # BoldDriver: Try to use a large learning rate without diverging
             for trialno in xrange(int(math.ceil(math.log(initLR_psi,2.0)))+5):
                 newPsi = projectPsi(psi - gamma_psi*grpsi,1.0)
                 if logcost(X,alpha,newPsi,workers) <= prevcost:
@@ -275,18 +275,17 @@ def optimize_SGD(X_array,M,D,beta,iter_thresh=5,\
                 # Display alpha, psi, X and L
                 dispPlots(alpha,psi,X,'Iteration Data',workers)
             # Display Log Objective
-            cost = logcost(X,alpha,psi,workers)            
+            cost_array[i] = logcost(X,alpha,psi,workers)            
             if dispObj:
                 pp.figure('Log likelihood plot')
-                pp.scatter(iter,cost,c = 'b')
+                pp.scatter(iter,cost_array[i],c = 'b')
                 pp.title('Likelihood Plot')
                 pp.draw()
                 pp.pause(1)
             # Print iteration status.
-            previtcost = cost
-            SNR = sigPerSampl/math.exp(cost)
+            SNR = sigPerSampl/math.exp(cost_array[i])
             print 'N',str(N),'K',str(K),'M',str(M),'D',str(D),'Beta',beta,\
-                'logObj','{:.2f}'.format(cost),\
+                'logObj','{:.2f}'.format(cost_array[i]),\
                 'SNR','{:.2f}'.format(SNR),\
                 'AvgL0', '{:.2f}'.format(\
                     np.mean([np.count_nonzero(item)/D for item in alpha_array])),\
@@ -295,6 +294,5 @@ def optimize_SGD(X_array,M,D,beta,iter_thresh=5,\
             # ===================== End Display ==========================
             # Count the iteration
             iter += 1
-    reconError = calcObjf(X,alpha,psi,workers)
     L0 = [np.count_nonzero(alpha) for alpha in alpha_array]
-    return alpha_array,psi,cost,reconError,L0,SNR
+    return alpha_array,psi,cost_array,cost_array,L0,SNR
