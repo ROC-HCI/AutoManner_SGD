@@ -73,7 +73,7 @@ python sisc_wrapper.py -iter_thresh 500 -M 64 -D 5 -i 'Data/20.1.csv' 'Data/20.2
 # Show a skeleton animation that is inflated from compressed data
 # python -c "import skelplot_mayavi as my; my.unitTest1('Data/13.1.csv')"
 
-python -c "from skelplot_mayavi import *;import scipy.io as sio; animateSkeleton(sio.loadmat('Results/result_M=64_D=5_beta=0.2__16_25_46.mat')['psi_recon'])"
+# python -c "from skelplot_mayavi import *;import scipy.io as sio; animateSkeleton(sio.loadmat('Results/result_M=64_D=5_beta=0.2__16_25_46.mat')['psi_recon'])"
 
 # Show the results (psi and alpha)
 # python filter.py --showresults Results/*.mat
