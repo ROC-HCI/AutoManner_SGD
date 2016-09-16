@@ -61,6 +61,7 @@ python sisc_wrapper.py -iter_thresh 500 -M 64 -D 5 -i 'Data/20.1.csv' 'Data/20.2
 # python filter.py Results/*.mat --hi SNR
 #
 # The following command will delete all the files with Beta = 0.06 and cost is
+
 # not minimum
 # ----------------------------------------------------------------------------
 # python filter.py Results/*beta=0.06*.mat --nlo cost | xargs rm
