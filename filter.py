@@ -23,6 +23,9 @@ def plotLcurve(args):
     LplotDat = np.concatenate(LplotDat,axis=0)
     plt.scatter(LplotDat[:,0],LplotDat[:,1])
     ax=plt.gca()
+    LplotDat = np.concatenate(LplotDat,axis=0)
+    plt.scatter(LplotDat[:,0],LplotDat[:,1])
+    ax=plt.gca()
     for idx in xrange(len(LplotDat)):
         ax.annotate('Beta='+str(LplotDat[idx,2])+'\n'+\
             '{:0.2e}'.format(LplotDat[idx,3])\

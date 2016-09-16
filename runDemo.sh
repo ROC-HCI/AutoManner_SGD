@@ -47,7 +47,6 @@ python sisc_wrapper.py -iter_thresh 500 -M 64 -D 5 -i 'Data/20.1.csv' 'Data/20.2
 ########################################################################
 # Use the visualization scripts in bash (csh might produce garbage).
 # Print the parameters of the results with highlighting the desired parts
-# -----------------------------------------------------------------------
 # python filter.py Results/*.mat --pprint SNR cost L0 | egrep --color "beta=0.07|$
 
 # Print parameters for Beta = 0.07

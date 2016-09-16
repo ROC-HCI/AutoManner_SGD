@@ -2,6 +2,7 @@
 #SBATCH -p standard
 #SBATCH -J tanveer_sisc
 #SBATCH -o /scratch/mtanveer/sisc_out/tanveer_sisc_%j_%a
+#SBATCH --mem=8gb
 #SBATCH -t 4-23:00:00
 #SBATCH -c 4
 #SBATCH -a 0-293
