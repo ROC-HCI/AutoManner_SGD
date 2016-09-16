@@ -45,24 +45,25 @@ python sisc_wrapper.py -iter_thresh 500 -M 64 -D 5 -i 'Data/20.1.csv' 'Data/20.2
 ########################################################################
 ########################### VISUALIZATION DEMO #########################
 ########################################################################
+# Use the visualization scripts in bash (csh might produce garbage).
 # Print the parameters of the results with highlighting the desired parts
 # -----------------------------------------------------------------------
-# python filter.py Results/result_?__*.mat -p SNR cost L0|egrep --color "_1__|beta=0.05|$"
+# python filter.py Results/*.mat --pprint SNR cost L0 | egrep --color "beta=0.07|$
 
 # Print parameters for Beta = 0.07
 # --------------------------------
-# python filter.py Results/*beta=0.07*.mat -pprint SNR cost L0
+# python filter.py Results/*beta=0.07*.mat --pprint SNR cost L0
 
 # Filter files with hi/low or not-hi/not-low parameter values this filtering
 # procedure could be used to delete files based on their parameters
 # --------------------------------------------------------------------------
-# python filter.py Results/*.mat -nlo cost
-# python filter.py Results/*.mat -hi SNR
+# python filter.py Results/*.mat --nlo cost
+# python filter.py Results/*.mat --hi SNR
 #
 # The following command will delete all the files with Beta = 0.06 and cost is
 # not minimum
 # ----------------------------------------------------------------------------
-# python filter.py Results/*beta=0.06*.mat -nlo cost | xargs rm
+# python filter.py Results/*beta=0.06*.mat --nlo cost | xargs rm
 
 # Plot an L curve
 # python filter.py Results/*.mat --Lcurve

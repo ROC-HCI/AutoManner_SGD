@@ -6,7 +6,6 @@ This module to "pretty print" the results
     University of Rochester
 -------------------------------------------------------------------------------
 '''
-import matplotlib
 from argparse import ArgumentParser
 import scipy.io as sio
 import numpy as np
@@ -17,10 +16,10 @@ def plotLcurve(args):
     LplotDat = []
     for afile in args.Files:
         if afile.lower().endswith('.mat'):
-                allDat = sio.loadmat(afile)
-                LplotDat.append(np.concatenate((allDat['L0'],\
-                    allDat['reconError'],\
-                allDat['Beta'],allDat['cost']),axis=1))
+            allDat = sio.loadmat(afile)
+            LplotDat.append(np.concatenate((allDat['L0'],\
+                allDat['reconError'],\
+            allDat['Beta'],allDat['cost']),axis=1))
     LplotDat = np.concatenate(LplotDat,axis=0)
     plt.scatter(LplotDat[:,0],LplotDat[:,1])
     ax=plt.gca()
@@ -38,26 +37,26 @@ def buildArg():
         It can also plot L curve.")
     pars.add_argument('Files',nargs='+',help='List of the (.mat) files from\
      which the results are to read')
-    pars.add_argument('-pprint',nargs='+',\
+    pars.add_argument('--pprint',nargs='+',\
         choices=['D','M','K','Beta','reconError','cost','SNR','L0'],\
         help='Print the specified parameters from the files in a pretty format')
-    pars.add_argument('-hi',nargs='?',\
+    pars.add_argument('--hi',nargs='?',\
         choices=['D','M','K','Beta','reconError','cost','SNR','L0'],\
         help='Specify a parameter name.\
         The program returns names of all the files that contain the highest\
         value of this parameter')
-    pars.add_argument('-lo',nargs='?',\
+    pars.add_argument('--lo',nargs='?',\
         choices=['D','M','K','Beta','reconError','cost','SNR','L0'],\
         help='Specify a parameter name.\
         The program returns names of all the files that contain the lowest\
         value of this parameter')
-    pars.add_argument('-nhi',nargs='?',\
+    pars.add_argument('--nhi',nargs='?',\
         choices=['D','M','K','Beta','reconError','cost','SNR','L0'],\
         help='Specify a parameter name.\
         The program returns names of all the files that does not \
         contain the highest\
         value of this parameter')
-    pars.add_argument('-nlo',nargs='?',\
+    pars.add_argument('--nlo',nargs='?',\
         choices=['D','M','K','Beta','reconError','cost','SNR','L0'],\
         help='Specify a parameter name.\
         The program returns names of all the files that does not\
@@ -155,6 +154,7 @@ def printparams(args):
             paramdat = ['{:0.2f}'.format(float(allData[par][0][0]))\
             for par in args.pprint]
             print template.format(*([afile]+paramdat))
+
 
 def filtfile(args):
     if args.hi or args.nhi:
